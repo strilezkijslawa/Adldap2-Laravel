@@ -177,6 +177,16 @@ class DatabaseUserProvider extends UserProvider
     }
 
     /**
+     * @param Authenticatable $user
+     * @param array $credentials
+     * @param bool $force
+     * @return void
+     */
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false) {
+        $this->eloquent->rehashPasswordIfRequired($user, $credentials, $force);
+    }
+
+    /**
      * Determines if login fallback is enabled.
      *
      * @return bool

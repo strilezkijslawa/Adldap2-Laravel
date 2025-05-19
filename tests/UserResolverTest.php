@@ -102,7 +102,7 @@ class UserResolverTest extends TestCase
     /** @test */
     public function connection_is_set_when_retrieving_provider()
     {
-        Config::shouldReceive('get')->once()->with('ldap_auth.connection', 'default')->andReturn('other-domain');
+        Config::set('ldap_auth.connection', 'other-domain');
 
         $ad = m::mock(AdldapInterface::class);
         $provider = m::mock(ProviderInterface::class);
@@ -156,9 +156,9 @@ class UserResolverTest extends TestCase
 
         Auth::shouldReceive('guard')->once()->andReturnSelf()->shouldReceive('getProvider')->once()->andReturn($authProvider);
 
-        Config::shouldReceive('get')->with('ldap_auth.connection', 'default')->andReturn('default')
-            ->shouldReceive('get')->with('ldap_auth.identifiers.ldap.locate_users_by', 'userprincipalname')->andReturn('userprincipalname')
-            ->shouldReceive('get')->with('ldap_auth.scopes', [])->andReturn([]);
+        Config::set('ldap_auth.connection', 'default');
+        Config::set('ldap_auth.identifiers.ldap.locate_users_by', 'userprincipalname');
+        Config::set('ldap_auth.scopes', []);
 
         $resolver = new UserResolver($ad);
 
