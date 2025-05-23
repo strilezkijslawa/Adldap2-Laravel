@@ -15,6 +15,7 @@ class LogAuthenticationTest extends TestCase
     /** @test */
     public function logged()
     {
+        $l = new LogAuthentication();
 
         $user = m::mock(User::class);
 
@@ -26,17 +27,18 @@ class LogAuthenticationTest extends TestCase
         $prefix = 'prefix.';
         $suffix = '.suffix';
 
-        Config::set('ldap_auth.connection', 'default');
-        Config::set('ldap.connections.default.settings.account_prefix', $prefix);
-        Config::set('ldap.connections.default.settings.account_suffix', $suffix);
-
         $authUsername = $prefix.$username.$suffix;
-
-        Log::shouldReceive('info')->once()->with("User '{$name}' is authenticating with username: '{$authUsername}'");
 
         $e = new Authenticating($user, $username);
 
-        $l = new LogAuthentication();
+        $logged = "User '{$name}' is authenticating with username: '{$authUsername}'";
+
+        Log::shouldReceive('info')->once()->with($logged);
+
+        Config::shouldReceive('get')->with('ldap_auth.connection')->andReturn('default')
+            ->shouldReceive('get')->with('ldap.connections.default.settings.account_prefix')->andReturn($prefix)
+            ->shouldReceive('get')->with('ldap.connections.default.settings.account_suffix')->andReturn($suffix);
+
         $l->handle($e);
     }
 }

@@ -150,7 +150,7 @@ class WindowsAuthenticate
      */
     protected function account(Request $request)
     {
-        return utf8_encode($request->server($this->key()));
+        return mb_convert_encoding($request->server($this->key()), 'UTF-8', mb_list_encodings());
     }
 
     /**

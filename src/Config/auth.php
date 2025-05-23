@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Base DN of users
+    |--------------------------------------------------------------------------
+    |
+    | If you supply this value the user resolver will use the base DN to
+    | run a LDAP listing instead of a tree search. Which could improve the
+    | performance in big systems.
+    |
+    */
+    'users_base_dn' => env('LDAP_USERS_BASE_DN'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Provider
     |--------------------------------------------------------------------------
     |

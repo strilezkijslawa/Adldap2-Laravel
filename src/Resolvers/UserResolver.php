@@ -133,6 +133,11 @@ class UserResolver implements ResolverInterface
     public function query(): Builder
     {
         $query = $this->getLdapAuthProvider()->search()->users();
+        if (config('ldap_auth.users_base_dn') !== null) {
+            $query = $query->in(config('ldap_auth.users_base_dn'));
+            $query = $query->listing();
+            $query = $query->limit(1);
+        }
 
         // We will ensure our object GUID attribute is always selected
         // along will all attributes. Otherwise, if the object GUID
